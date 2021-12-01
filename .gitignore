@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-/src/main/webapp/WEB-INF/calsses
+/src/main/webapp/WEB-INF/classes
