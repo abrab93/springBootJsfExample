@@ -5,18 +5,20 @@ Add, delete and update the employee information with with the help of JSF and Sp
 ### Prerequisites
 - JSF 2.2.9
 - Java 8
-- Spring Boot 2.0.0.RELEASE 
+- Spring Boot 2.6.1 
 - Spring boot AOP (To be integrated)
 - Maven latest
 - H2 (With the dev profile you can use H2)
-- tomcat
+- Tomcat
+- Flyway
+- Mapstruct
+- Lombok
 
 ### Getting Started
 ##### Deployment Process
 - Spring Boot (SpringJsfApplication.java)
 - mvn clean
-- mvn package 
-- access point
+- mvn package
 
 #####  Application :
 - http://localhost:9090/jsfspring/type/List.jsf
