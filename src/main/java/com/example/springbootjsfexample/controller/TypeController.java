@@ -1,61 +1,48 @@
 package com.example.springbootjsfexample.controller;
 
 import com.example.springbootjsfexample.config.Messages;
-import com.example.springbootjsfexample.model.Type;
-import com.example.springbootjsfexample.repository.TypeRepository;
+import com.example.springbootjsfexample.controller.util.JsfUtil;
+import com.example.springbootjsfexample.controller.util.JsfUtil.PersistAction;
+import com.example.springbootjsfexample.dto.TypeDto;
 import com.example.springbootjsfexample.service.TypeService;
-import org.apache.commons.collections4.IteratorUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.annotation.SessionScope;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.convert.FacesConverter;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
-import com.example.springbootjsfexample.controller.util.JsfUtil;
-import com.example.springbootjsfexample.controller.util.JsfUtil.PersistAction;
 
 @Controller("typeController")
 @SessionScope
+@Slf4j
+@RequiredArgsConstructor
 public class TypeController implements Serializable {
 
-    @Autowired
-    private TypeRepository ejbFacade;
-    @Autowired
-    private Messages messages;
-    private List<Type> items = null;
-    private Type selected;
+    private final TypeService typeService;
+    private final Messages messages;
 
-    public TypeController() {
-    }
+    private List<TypeDto> items = null;
+    private TypeDto selected;
 
-    public Type getSelected() {
+    public TypeDto getSelected() {
         return selected;
     }
 
-    public void setSelected(Type selected) {
+    public void setSelected(TypeDto selected) {
         this.selected = selected;
     }
 
-    protected void setEmbeddableKeys() {
-    }
 
-    protected void initializeEmbeddableKey() {
-    }
-
-    private TypeRepository getFacade() {
-        return ejbFacade;
-    }
-
-    public Type prepareCreate() {
-        selected = new Type();
-        initializeEmbeddableKey();
+    public TypeDto prepareCreate() {
+        selected = new TypeDto();
         return selected;
     }
 
@@ -78,21 +65,20 @@ public class TypeController implements Serializable {
         }
     }
 
-    public List<Type> getItems() {
+    public List<TypeDto> getItems() {
         if (items == null) {
-            items = IteratorUtils.toList(getFacade().findAll().iterator());
+            items = typeService.findAll();
         }
         return items;
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
-            setEmbeddableKeys();
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    getFacade().save(selected);
+                    typeService.createOrUpdate(selected);
                 } else {
-                    getFacade().delete(selected);
+                    typeService.delete(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (Exception ex) {
@@ -114,19 +100,19 @@ public class TypeController implements Serializable {
         }
     }
 
-    public Type getType(Integer id) {
-        return getFacade().findById(id).orElse(null);
+    public TypeDto getType(Integer id) {
+        return typeService.findById(id);
     }
 
-    public List<Type> getItemsAvailableSelectMany() {
-        return IteratorUtils.toList(getFacade().findAll().iterator());
+    public List<TypeDto> getItemsAvailableSelectMany() {
+        return typeService.findAll();
     }
 
-    public List<Type> getItemsAvailableSelectOne() {
-        return IteratorUtils.toList(getFacade().findAll().iterator());
+    public List<TypeDto> getItemsAvailableSelectOne() {
+        return typeService.findAll();
     }
 
-    @FacesConverter(forClass = Type.class)
+    @FacesConverter(forClass = TypeDto.class)
     public static class TypeControllerConverter implements Converter {
 
         @Override
@@ -156,11 +142,11 @@ public class TypeController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Type) {
-                Type o = (Type) object;
+            if (object instanceof TypeDto) {
+                TypeDto o = (TypeDto) object;
                 return getStringKey(o.getId());
             } else {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Type.class.getName()});
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), TypeDto.class.getName()});
                 return null;
             }
         }

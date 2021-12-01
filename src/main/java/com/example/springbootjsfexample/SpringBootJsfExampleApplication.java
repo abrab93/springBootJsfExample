@@ -27,7 +27,7 @@ public class SpringBootJsfExampleApplication {
 
     @Bean
     public ServletRegistrationBean<Servlet> facesServletRegistration() {
-        ServletRegistrationBean<Servlet> registration = new ServletRegistrationBean<Servlet>(facesServlet(), "*.jsf");
+        ServletRegistrationBean<Servlet> registration = new ServletRegistrationBean<Servlet>(facesServlet(), "*.php");
         return registration;
     }
 
