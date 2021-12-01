@@ -19,7 +19,7 @@ Add, delete and update the employee information with with the help of JSF and Sp
 - access point
 
 #####  Application :
-- http://localhost:9090/jsfspring/employeelist.jsf
+- http://localhost:9090/jsfspring/type/List.jsf
 #####   H2 DB Console:
 -  http://localhost:9090/jsfspring/h2/
 
