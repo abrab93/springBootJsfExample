@@ -25,4 +25,4 @@ Add, delete and update the employee information with with the help of JSF and Sp
 #####   H2 DB Console:
 -  http://localhost:9090/jsfspring/h2/
 
-- data.sql will insert some employee information and Department information in h2 db
+- flyway will insert some type information in db
